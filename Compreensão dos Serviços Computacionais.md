@@ -27,3 +27,11 @@ A solução Amazon Elastic Kubernetes Service (Amazon EKS) é um serviço totalm
 - **Amazon EKS com AWS Fargate:** Isso é ótimo para equipes que desejam flexibilidade no Kubernetes sem gerenciar servidores. Ele combina a potência do Kubernetes com a simplicidade com tecnologia sem servidor, ajudando a escalar aplicações rapidamente em vários casos de uso.
 
 
+##### Amazon ECR
+O **ECR (Elastic Container Registry)** é um **registro de imagens**: um repositório onde as imagens ficam armazenadas para serem baixadas depois. Por padrão, os repositórios são **privados**, ou seja, só quem tem permissão na sua conta AWS consegue acessar.
+
+
+##### Fargate
+Funciona com as soluções ECS e EKS, dando a liberdade do usuário não precisar configurar servidores/instâncias, a AWS faz isso tudo sozinha, dando liberdade para que o desenvolvedor foque em desenvolver suas aplicações. É uma aplicação server less.
+
+[[Outros Serviços AWS...]]
