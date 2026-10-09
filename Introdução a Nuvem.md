@@ -4,5 +4,8 @@
 
 [[Computação em Nuvem (EC2)]]
 [[Compreensão dos Serviços Computacionais]]
+[[Infraestrutura Global da AWS]]
+[[Rede]]
+
 
 
