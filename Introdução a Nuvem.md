@@ -6,6 +6,8 @@
 [[Compreensão dos Serviços Computacionais]]
 [[Infraestrutura Global da AWS]]
 [[Rede]]
+[[Armazenamento]]
+
 
 
 
