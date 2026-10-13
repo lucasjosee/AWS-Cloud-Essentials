@@ -1,51 +1,71 @@
 #### Amazon Virtual Private Cloud(Amazon VPC)
 A **Amazon VPC (Virtual Private Cloud)** é a sua **rede privada dentro da AWS**. É um pedaço isolado da nuvem onde seus recursos (instâncias EC2, bancos RDS, containers) vivem, e onde você decide quem entra, quem sai e quem conversa com quem.
 
-A VPC, é criada em cada região do mundo assim que você cria uma conta na AWS. Também é criada uma sub-rede pública em cada AZ de cada região.
+- Uma VPC pertence a **uma Região** e pode abranger todas as AZs dela.
+- Uma **sub-rede** fica em **uma única AZ**.
+- Toda conta já vem com uma **VPC padrão** em cada Região, com uma sub-rede pública em cada AZ.
+
 ![[Pasted image 20261008192748.png]]
 
-Tudo que está dentro da VPC consegue se comunicar livremente, independente se está em outra AZ ou se a sub-rede é publica ou privada.
+Tudo que está dentro da VPC consegue se comunicar entre si (respeitando as ACLs e grupos de segurança), independente se está em outra AZ ou se a sub-rede é publica ou privada.
 
-Usos de um sub-rede dentro de uma VPC:
-1. Pode ser usada para compartilhar recursos públicos
-2. Pode ser usada para organizar seus recursos
-3. Pode ser usada para isolar recursos e mantê-los privados
+**Sub-rede pública x privada:**
+- **Pública**: tem rota para o gateway de internet. Ex.: servidores web.
+- **Privada**: sem rota direta para a internet. Ex.: **bancos de dados**.
 
-#### Gateways de Internet
-Para permitir que o tráfego público da internet acesse a VPC, é preciso associar um **gateway de internet** à VPC. Um gateway da internet é uma conexão entre uma VPC e a internet. Você pode pensar em um gateway da internet como uma porta que os clientes usam para entrar na cafeteria.
-
-Para acessar recursos privados dentro da VPC, é necessário um gateway privado.
+#### Gateways
+- **Gateway de internet**: conexão entre a VPC e a internet. Sem ele, nada da internet entra na VPC. Você pode pensar como a porta que os clientes usam para entrar na cafeteria.
+- **NAT gateway**: permite que recursos de uma sub-rede **privada** acessem a internet (ex.: baixar atualizações) **sem** que a internet consiga iniciar conexão com eles.
+- **Gateway privado virtual (Virtual Private Gateway)**: ponto de entrada na VPC para conexões **VPN** vindas da sua rede on-premises.
 
 ##### Maneiras de se conectar na nuvem AWS:
 
-**AWS Client VPN**
-	A solução AWS Client VPN é um serviço de rede que pode ser usado para conectar os profissionais remotos e redes on-premises na nuvem. Trata-se de um serviço VPN elástico e totalmente gerenciado que aumenta ou diminui a escala verticalmente de forma automática de acordo com a demanda do usuário.
+| Serviço | O que é | Palavra-chave na prova |
+| --- | --- | --- |
+| **AWS Client VPN** | VPN para **usuários individuais** (profissionais remotos) acessarem a AWS/rede da empresa. | "funcionários remotos" |
+| **AWS Site-to-Site VPN** | Túnel **criptografado pela internet pública** entre o data center/filial e a VPC. | "rápido de configurar", "baixo custo", "criptografado pela internet" |
+| **AWS Direct Connect** | Linha **física dedicada e privada** entre seu data center e a AWS. **Não passa pela internet.** | "conexão dedicada", "desempenho consistente", "alta largura de banda", "reduzir custos de transferência" |
+| **AWS PrivateLink** | Acessar serviços da AWS ou de terceiros **de forma privada**, sem expor o tráfego à internet. | "sem passar pela internet pública" |
 
-**AWS Site-to-Site VPN**
-	Algumas empresas talvez queiram estabelecer conexões seguras e criptografadas entre suas redes on-premises, como data centers ou filiais, e seus recursos na solução Amazon VPC. A VPN site a site cria uma conexão segura entre o data center ou as filiais e os recursos da nuvem AWS.
-
-**AWS PrivateLink**
-	Às vezes, outras empresas precisam da flexibilidade por meio da conexão de forma privada aos recursos de outros provedores de nuvem, como se estivessem em sua própria VPC. A solução AWS PrivateLink é uma tecnologia altamente disponível e dimensionável que pode ser usada para conectar a VPC de forma privada a serviços e recursos, como se eles estivessem na sua VPC.
-
-**AWS Direct Connect**
-	  A solução Direct Connect é um serviço que permite estabelecer uma conexão privada dedicada entre sua rede e a VPC na nuvem AWS. Reduz os custos de rede e aumenta a quantidade de largura de banda.
+> **Pegadinha:** Direct Connect **não é criptografado por padrão** e leva semanas para ficar pronto. É comum usar uma Site-to-Site VPN como backup do Direct Connect.
 
 #### Tráfego de rede em uma VPC
-Todos os dados que entram e saem de uma VPC são carregados em **pacotes**. Um pacote, é uma unidade de dados enviada pela internet ou por uma rede. Antes de entrar ele entra pelo gateway, e antes de entrar em uma sub-rede, varias verificações de segurança são feitas.
+Todos os dados que entram e saem de uma VPC são carregados em **pacotes**. Um pacote, é uma unidade de dados enviada pela internet ou por uma rede. Ele entra pelo gateway, e antes de entrar em uma sub-rede e chegar ao recurso, varias verificações de segurança são feitas.
 
 ![[Pasted image 20261010001545.png]]
 ##### ACLs de Rede
-Firewall virtual que controla o tráfego da sub-rede.
+Firewall virtual que controla o tráfego **no nível da sub-rede**.
 
-Cada conta AWS tem uma ACL de rede-padrão. Ao configurar a VPC, você pode usar a ACL de rede-padrão da conta ou criar ACLs de rede personalizadas. Em geral, a ACL de rede-padrão da conta permite todo o tráfego de entrada e saída, mas é possível modificá-la ao adicionar suas regras. São **stateless**, não se lembram de quem entrou e nem de quem saiu, por isso que fazem a verificação em ambos os sentidos.
+Cada conta AWS tem uma ACL de rede-padrão, que **permite todo o tráfego** de entrada e saída, mas é possível modificá-la ao adicionar suas regras. ACLs personalizadas **negam tudo** até você adicionar regras. Aceitam regras de **permitir e negar** (útil para bloquear um IP específico). São **stateless**, não se lembram de quem entrou e nem de quem saiu, por isso que fazem a verificação em ambos os sentidos.
 
 ##### Grupos de Segurança
-Controla o tráfego de entrada a nível do recurso que está dentro na sub-rede.
+Firewall virtual que controla o tráfego **no nível do recurso** (ex.: instância EC2) dentro da sub-rede.
 
-Depois que um pacote entra em uma sub-rede, ele precisa ter as permissões avaliadas para os recursos dentro da sub-rede, como as instâncias da solução Amazon EC2. Um grupo de segurança é o componente da VPC que verifica as permissões de pacotes para uma instância da solução Amazon EC2. Trata-se de um firewall virtual que controla o tráfego de entrada e saída para recursos específicos da AWS, como instâncias da solução Amazon EC2. Por padrão, um grupo de segurança nega todo o tráfego de entrada e permite todo o tráfego de saída. É **stateful**, então lembra quem entra, por isso só faz a verificação na entrada.
+Por padrão, um grupo de segurança **nega todo o tráfego de entrada e permite todo o tráfego de saída**. Só aceita regras de **permitir** (não dá para criar regra de negar). É **stateful**, então lembra quem entra e libera a resposta automaticamente.
 
 PS: Tive um problema de grupo de segurança ao lançar uma instância, não estava na lista de permissões a conexão HTTP, tive que adicionar e só assim consegui me conectar.
 
+> **Pegadinhas:**
+> - "Bloquear um IP específico" → **ACL de rede** (grupo de segurança não tem regra de negar).
+> - Configurar grupos de segurança e ACLs é **responsabilidade do cliente**.
 
+#### DNS e entrega de conteúdo
+| Serviço | O que faz |
+| --- | --- |
+| **Amazon Route 53** | Serviço de **DNS** (traduz nome → IP), registra domínios e faz roteamento (por latência, geolocalização, failover, ponderado). |
+| **Amazon CloudFront** | **CDN**: guarda cache do conteúdo nas **edge locations** perto do usuário → menor latência. |
 
+> **Pegadinha:** Route 53 decide **para onde** o usuário vai. CloudFront entrega o conteúdo **mais rápido**. "Redirecionar para site reserva se o principal cair" → Route 53 (failover).
 
+#### Resumo rápido
+| Cenário | Resposta |
+| --- | --- |
+| Rede isolada na AWS | VPC |
+| Banco de dados fora do alcance da internet | Sub-rede privada |
+| Sub-rede privada precisa baixar atualizações | NAT gateway |
+| Firewall da instância | Grupo de segurança |
+| Firewall da sub-rede | ACL de rede |
+| Link rápido e barato, criptografado pela internet | Site-to-Site VPN |
+| Link dedicado, consistente, sem internet | Direct Connect |
+| Nome de domínio / DNS | Route 53 |
+| Cache de conteúdo perto do usuário | CloudFront |
