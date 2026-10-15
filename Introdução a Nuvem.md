@@ -31,3 +31,5 @@
 [[Infraestrutura Global da AWS]]
 [[Rede]]
 [[Armazenamento]]
+[[AWS Cloud Essencials/Banco de Dados|Banco de Dados]]
+
