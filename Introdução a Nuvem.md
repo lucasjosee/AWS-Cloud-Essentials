@@ -32,4 +32,9 @@
 [[Rede]]
 [[Armazenamento]]
 [[AWS Cloud Essencials/Banco de Dados|Banco de Dados]]
+[[IA, ML e data analytics]]
+[[Segurança]]
+
+
+
 

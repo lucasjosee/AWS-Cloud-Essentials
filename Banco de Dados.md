@@ -64,15 +64,15 @@ O DynamoDB oferece disponibilidade de 99,99% e replica os dados automaticamente 
 ### Bancos de dados com finalidade específica (*purpose-built*)
 A ideia da AWS é usar **um banco certo para cada tipo de dado**, em vez de forçar tudo num relacional. Na prova basta reconhecer o nome e o uso:
 
-| Serviço | Tipo | Palavra-chave na prova |
-| --- | --- | --- |
+| Serviço                | Tipo                                                | Palavra-chave na prova                                                                            |
+| ---------------------- | --------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
 | **Amazon ElastiCache** | **Cache em memória** (Valkey, Redis OSS, Memcached) | “cache”, “dados acessados com frequência”, “reduzir carga do banco”, “latência de microssegundos” |
-| **Amazon MemoryDB** | Banco em memória **durável** compatível com Redis | “banco principal em memória”, “ultrarrápido e sem perder dados” |
-| **Amazon DocumentDB** | Banco de **documentos** (JSON) | “compatível com **MongoDB**”, catálogos, perfis de usuário |
-| **Amazon Neptune** | Banco de **grafos** | “redes sociais”, “recomendações”, “detecção de fraudes”, “dados altamente conectados” |
-| **Amazon Keyspaces** | Colunas largas | “compatível com **Apache Cassandra**” |
-| **Amazon Timestream** | **Séries temporais** | “dados de IoT ao longo do tempo”, métricas |
-| **Amazon QLDB** | **Ledger** (registro imutável) | “histórico de transações imutável e verificável” |
+| **Amazon MemoryDB**    | Banco em memória **durável** compatível com Redis   | “banco principal em memória”, “ultrarrápido e sem perder dados”                                   |
+| **Amazon DocumentDB**  | Banco de **documentos** (JSON), NoSQL               | “compatível com **MongoDB**”, catálogos, perfis de usuário                                        |
+| **Amazon Neptune**     | Banco de **grafos**                                 | “redes sociais”, “recomendações”, “detecção de fraudes”, “dados altamente conectados”             |
+| **Amazon Keyspaces**   | Colunas largas                                      | “compatível com **Apache Cassandra**”                                                             |
+| **Amazon Timestream**  | **Séries temporais**                                | “dados de IoT ao longo do tempo”, métricas                                                        |
+| **Amazon QLDB**        | **Ledger** (registro imutável)                      | “histórico de transações imutável e verificável”                                                  |
 
 > O **QLDB foi descontinuado em 31/07/2025** (a AWS recomenda migrar para Aurora PostgreSQL), mas ainda pode aparecer em simulados antigos.
 
