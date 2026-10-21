@@ -34,6 +34,10 @@
 [[AWS Cloud Essencials/Banco de Dados|Banco de Dados]]
 [[IA, ML e data analytics]]
 [[Segurança]]
+[[Monitoramento, conformidade e governancia]]
+[[Preço e suporte]]
+[[Migração para a AWS]]
+
 
 
 
